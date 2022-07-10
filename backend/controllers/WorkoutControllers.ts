@@ -1,13 +1,14 @@
+import express from 'express'
 const Workout = require('../models/WorkoutModel')
 const mongoonse = require('mongoose')
 
-const getAllWorkouts = async (req, res) => {
+const getAllWorkouts = async (req: express.Request, res: express.Response) => {
    const workouts = await Workout.find({}).sort({createdAt:-1})
    res.status(200).json({status: 200, message: workouts})
 }
 
 
-const getWorkout = async (req, res) => {
+const getWorkout = async (req: express.Request, res: express.Response) => {
     const {id} = req.params
 
     if(!mongoonse.Types.ObjectId.isValid(id)){
@@ -24,8 +25,8 @@ const getWorkout = async (req, res) => {
     
 }
 
-const createWorkout = async (req, res) => {
-    //req.body
+const createWorkout = async (req: express.Request, res: express.Response) => {
+  
     const {title, load, reps} = req.body
 
     var emptyFields = []
@@ -54,13 +55,13 @@ const createWorkout = async (req, res) => {
         const workOut = await Workout.create({title, load, reps})
         res.status(201).json({status: 201, message: workOut})
 
-    }catch(error){
+    }catch(error: any){
          res.status(400).json({status: 400, message: error.message})
 
     }
 }
 
-const deleteWorkout = async (req, res) => {
+const deleteWorkout = async (req: express.Request, res: express.Response) => {
     const {id} = req.params
 
     if(!mongoonse.Types.ObjectId.isValid(id)){
@@ -77,7 +78,7 @@ const deleteWorkout = async (req, res) => {
 }
 
 
-const updateWork = async (req, res) => {
+const updateWork = async (req: express.Request, res: express.Response) => {
     const {id} = req.params
     if(!mongoonse.Types.ObjectId.isValid(id)){
         return res.status(400).json({status: 400, message: "No workout" }) 

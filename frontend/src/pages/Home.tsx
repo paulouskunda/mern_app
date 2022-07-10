@@ -17,20 +17,20 @@ const Home: React.FC = (): ReactElement => {
 
             if(response.ok){
                 dispatch(setWorkouts(json.message))
-                console.log(workouts)
+               
             }
         }
 
         fetchWorkouts()
     }, [])
-
     return (
         <div className="home">
             <div className="workouts">
                 Be back soon.
-                {/* {workouts && workouts.map((workout) => (
-                <WorkoutDetails key={workout._id} workout={workout} />
-                ))} */}
+                {workouts.workouts && workouts.workouts.map((workout) => (
+                <WorkoutDetails workout={workout} key={workout._id as string} />
+                
+                ))}
             </div>
             <WorkoutForm />
         </div>

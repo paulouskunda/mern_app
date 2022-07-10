@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 type IWorkout ={
-    createdAt: String
+    createdAt: Date
     load: Number
     reps: Number
     title: String
-    updatedAt: String
+    updatedAt: Date
     __v: Number
     _id: String
 }
@@ -22,16 +22,19 @@ const initialState: WorkOutsObject = {
 export const workoutSlice = createSlice({
     name: "workouts",
     initialState,
-
     reducers: {
         setWorkouts: (state, action: PayloadAction<IWorkout[]>) => {
-            console.log(`payload`)
-            console.log(action.payload)
             state.workouts = action.payload
         },
+        createWorkout: (state, action:PayloadAction<IWorkout>) => {
+            state.workouts = [ action.payload, ...state.workouts]
+        },
+        deleteWorkout: (state, action:PayloadAction<IWorkout>) => {
+           state.workouts = state.workouts.filter((workout: IWorkout) => workout._id !== action.payload._id)
+        }
     },
   
 })
 
-export const {setWorkouts} = workoutSlice.actions
+export const {setWorkouts, createWorkout, deleteWorkout} = workoutSlice.actions
 export default workoutSlice.reducer

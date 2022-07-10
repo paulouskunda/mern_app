@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import type { RootState } from "../app/store"
-import { setWorkouts } from "../redux/slices/WorkoutSlice"
+import { createWorkout } from "../redux/slices/WorkoutSlice"
 import { useSelector, useDispatch } from 'react-redux'
 
 // import { useWorkoutsContext } from "../hooks/useWorkoutContextHook"
@@ -43,8 +43,7 @@ const WorkoutForm = () => {
             setError(null)
             setEmptyFields([])
             console.log('New workout created', json)
-            setWorkouts(json.message)
-            // dispatch({type: 'CREATE_WORKOUTS', payload: json.message})
+            dispatch(createWorkout(json.message))
         }
     }
 
@@ -57,6 +56,7 @@ const WorkoutForm = () => {
                     type="text"
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
+                    // className={emptyFields.includes('title') ? 'error'}
                     // className={emptyFields.includes('title') ?  'error' : ''}
                 />
 

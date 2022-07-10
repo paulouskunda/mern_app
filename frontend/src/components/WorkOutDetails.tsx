@@ -1,19 +1,21 @@
 import React, { ReactElement } from "react"
 import type { RootState } from '../app/store'
-import { setWorkouts } from "../redux/slices/WorkoutSlice"
+import { deleteWorkout } from "../redux/slices/WorkoutSlice"
 import { useSelector, useDispatch } from 'react-redux'
 
 // import { useWorkoutsContext } from "../hooks/useWorkoutContextHook"
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-interface IWorkout {
-    _id: String
-    title:String,
-    reps:Number,
-    load:Number,
+type IWorkout ={
     createdAt: Date
+    load: Number
+    reps: Number
+    title: String
+    updatedAt: Date
+    __v: Number
+    _id: String
 }
 
-const WorkoutDetails: React.FC<{workout: IWorkout}> = ({workout}): ReactElement => {
+const WorkoutDetails: React.FC<{workout: IWorkout}> = ({workout}) => {
     const workouts = useSelector((state: RootState) => state.workouts)
     const dispatch = useDispatch()
 
@@ -25,14 +27,15 @@ const WorkoutDetails: React.FC<{workout: IWorkout}> = ({workout}): ReactElement 
         const json = await response.json()
 
         if(response.ok){
-            // dispatch({type: 'DELETE_WORKOUT', payload: json.message})
+            console.log(`Deleted ${json.message}`)
+            dispatch(deleteWorkout(json.message))
         }
     }
     return (
         <div className="workout-details">
             <h4>{workout.title}</h4>
-            {/* <p>{workout.load}</p> */}
-            {/* <p><strong>Number of reps: </strong>{workout.reps}</p> */}
+            <p>Loads: {workout.load.toString()}</p>
+            <p><strong>Number of reps: </strong>{workout.reps.toString()}</p>
             <p>{formatDistanceToNow(new Date(workout.createdAt), {addSuffix: true})}</p>
             <span onClick={handleDelete} className="material-symbols-outlined">delete</span>
         </div>
