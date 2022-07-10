@@ -1,15 +1,21 @@
 import React, { useState } from "react"
-import { useWorkoutsContext } from "../hooks/useWorkoutContextHook"
+import type { RootState } from "../app/store"
+import { setWorkouts } from "../redux/slices/WorkoutSlice"
+import { useSelector, useDispatch } from 'react-redux'
+
+// import { useWorkoutsContext } from "../hooks/useWorkoutContextHook"
 
 const WorkoutForm = () => {
-    const {dispatch} = useWorkoutsContext()
+    const workouts = useSelector((state: RootState) => state.workouts)
+    const dispatch = useDispatch()
+
     const [title, setTitle] = useState('')
     const [load, setLoad] = useState('')
     const [reps, setReps] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
 
         const workout = {title, load, reps}
@@ -37,7 +43,8 @@ const WorkoutForm = () => {
             setError(null)
             setEmptyFields([])
             console.log('New workout created', json)
-            dispatch({type: 'CREATE_WORKOUTS', payload: json.message})
+            setWorkouts(json.message)
+            // dispatch({type: 'CREATE_WORKOUTS', payload: json.message})
         }
     }
 
@@ -50,7 +57,7 @@ const WorkoutForm = () => {
                     type="text"
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
-                    className={emptyFields.includes('title') ?  'error' : ''}
+                    // className={emptyFields.includes('title') ?  'error' : ''}
                 />
 
                 <label>Load (in KG)</label>
@@ -58,7 +65,7 @@ const WorkoutForm = () => {
                     type="number"
                     onChange={(e) => setLoad(e.target.value)}
                     value={load}
-                    className={emptyFields.includes('load') ?  'error' : ''}
+                    // className={emptyFields.includes('load') ?  'error' : ''}
                 />
 
                 <label>Reps:</label>
@@ -66,7 +73,7 @@ const WorkoutForm = () => {
                     type="number"
                     onChange={(e) => setReps(e.target.value)}
                     value={reps}
-                    className={emptyFields.includes('reps') ?  'error' : ''}
+                    // className={emptyFields.includes('reps') ?  'error' : ''}
 
                 />
 
